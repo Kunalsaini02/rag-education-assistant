@@ -1,0 +1,61 @@
+CHAPTER 2: PROCESS MANAGEMENT
+2.1 The Concept of a Process
+In a modern multiprogramming environment, the CPU switches among various activities to stay busy. A process is the central abstraction of an operating system. While a "program" is a passive entity (like a file stored on a disk), a "process" is an active entity.
+2.1.1 Process Components
+A process includes more than just the program code (text section). It also contains:
+* The Program Counter: Indicates the address of the next instruction to be executed.
+* Stack: Contains temporary data (function parameters, return addresses, local variables).
+* Data Section: Contains global variables.
+* Heap: Memory dynamically allocated during process run time.
+
+2.2 Process States
+As a process executes, it changes its state. The state of a process is defined in part by that process’s current activity.
+1. New: The process is being created.
+2. Running: Instructions are being executed by the CPU.
+3. Waiting (Blocked): The process is waiting for some event to occur (such as I/O completion or reception of a signal).
+4. Ready: The process is waiting to be assigned to a processor.
+5. Terminated: The process has finished execution.
+
+2.3 The Process Control Block (PCB)
+Each process is represented in the operating system by a Process Control Block (PCB), also called a Task Control Block. It serves as the repository for any information that may vary from process to process.
+* Process State: Ready, running, waiting, etc.
+* Program Counter: The address of the next instruction.
+* CPU Registers: Accumulators, index registers, stack pointers.
+* CPU-Scheduling Information: Process priority, pointers to scheduling queues.
+* Memory-Management Information: Page tables or segment tables.
+* Accounting Information: Amount of CPU used, time limits, job numbers.
+* I/O Status Information: List of I/O devices allocated to the process, list of open files.
+
+2.4 Context Switching
+When the CPU switches to another process, the system must save the state of the old process and load the saved state for the new process via a PCB. This task is known as a Context Switch.
+* Context-switch time is pure overhead because the system does no useful work while switching.
+* The speed of a context switch varies from machine to machine, depending on memory speed, the number of registers, and the existence of special instructions.
+
+2.5 Process Scheduling
+The objective of multiprogramming is to have some process running at all times to maximize CPU utilization. The Process Scheduler selects an available process for program execution on the CPU.
+2.5.1 Scheduling Queues
+* Job Queue: The set of all processes in the system.
+* Ready Queue: The set of all processes residing in main memory, ready and waiting to execute.
+* Device Queues: The set of processes waiting for a specific I/O device.
+
+2.6 Inter-process Communication (IPC)
+Processes executing concurrently in the OS may be either independent processes or cooperating processes. Cooperating processes require an IPC mechanism to allow them to exchange data and information.
+2.6.1 Shared Memory Systems
+A region of memory that is shared by cooperating processes is established. Processes can then exchange information by reading and writing data to the shared region. This is the fastest method of IPC but requires synchronization (like Semaphores).
+2.6.2 Message Passing Systems
+Communication takes place by means of messages exchanged between the cooperating processes.
+* Direct Communication: Processes must explicitly name the recipient or sender.
+* Indirect Communication: Messages are sent to and received from "mailboxes" or ports.
+
+2.7 Threads: A Brief Overview
+A thread is a basic unit of CPU utilization; it comprises a thread ID, a program counter, a register set, and a stack. It shares with other threads belonging to the same process its code section, data section, and other operating-system resources.
+* Single-threaded process: One thread of control.
+* Multi-threaded process: Can perform more than one task at a time (e.g., a word processor displaying graphics while responding to keystrokes).
+
+2.8 Operations on Processes
+Operating systems must provide mechanisms for process creation and process termination.
+2.8.1 Process Creation
+A process may create several new processes during the course of execution. The creating process is called the parent, and the new processes are called the children. In UNIX, a new process is created by the fork() system call.
+2.8.2 Process Termination
+A process terminates when it finishes executing its final statement and asks the operating system to delete it by using the exit() system call. At that point, the process may return a status value (typically an integer) to its parent process.
+

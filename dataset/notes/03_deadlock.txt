@@ -1,0 +1,49 @@
+CHAPTER 3: DEADLOCK
+3.1 The Deadlock Problem
+In a multiprogramming environment, several processes may compete for a finite number of resources. A process requests resources; if the resources are not available at that time, the process enters a waiting state. Sometimes, a waiting process is never again able to change state because the resources it has requested are held by other waiting processes. This situation is called a Deadlock.
+A classic example is a narrow bridge where traffic can only flow in one direction. If two cars meet in the middle, neither can proceed unless one backs up (preemption/rollback).
+
+3.2 System Model
+A system consists of a finite number of resources to be distributed among several competing processes. These resources are partitioned into several types, such as CPU cycles, memory space, and I/O devices (printers, drives).
+A process must request a resource before using it and must release the resource after using it. The sequence of events is:
+1. Request: The process requests the resource. If it cannot be granted immediately, the process must wait.
+2. Use: The process operates on the resource.
+3. Release: The process yields the resource back to the system.
+
+3.3 Necessary Conditions for Deadlock
+A deadlock situation can arise if and only if the following four conditions hold simultaneously in a system:
+1. Mutual Exclusion: At least one resource must be held in a non-sharable mode; only one process at a time can use the resource.
+2. Hold and Wait: A process must be holding at least one resource and waiting to acquire additional resources that are currently being held by other processes.
+3. No Preemption: Resources cannot be preempted; a resource can be released only voluntarily by the process holding it, after that process has completed its task.
+4. Circular Wait: A set $\{P_0, P_1, ..., P_n\}$ of waiting processes must exist such that $P_0$ is waiting for a resource held by $P_1$, $P_1$ is waiting for a resource held by $P_2$, and so on, until $P_n$ is waiting for a resource held by $P_0$.
+
+3.4 Resource-Allocation Graph
+Deadlocks can be described more precisely by a directed graph called a System Resource-Allocation Graph. This graph consists of a set of vertices $V$ and a set of edges $E$.
+* Vertices ($V$): Divided into two types:
+o $P = \{P_1, P_2, ..., P_n\}$, the set of all active processes. (Represented as Circles)
+o $R = \{R_1, R_2, ..., R_m\}$, the set of all resource types. (Represented as Rectangles)
+* Edges ($E$):
+o Request Edge: A directed edge $P_i \rightarrow R_j$ signifies that process $P_i$ has requested an instance of resource type $R_j$.
+o Assignment Edge: A directed edge $R_j \rightarrow P_i$ signifies that an instance of resource type $R_j$ has been allocated to process $P_i$.
+Important Rule: If the graph contains no cycles, then no process in the system is deadlocked. If the graph does contain a cycle, then a deadlock may exist.
+3.5 Methods for Handling Deadlocks
+Generally, there are three ways to deal with the deadlock problem:
+3.5.1 Deadlock Prevention
+Prevention provides a set of methods to ensure that at least one of the four necessary conditions cannot hold.
+* Eliminating Hold and Wait: Require processes to request all resources at once before execution begins.
+* Eliminating Circular Wait: Impose a total ordering of all resource types and require that each process requests resources in an increasing order of enumeration.
+3.5.2 Deadlock Avoidance
+Avoidance requires that the operating system be given additional information in advance concerning which resources a process will request and use during its lifetime.
+Safe State: A state is safe if the system can allocate resources to each process (up to its maximum) in some order and still avoid a deadlock.
+* Banker’s Algorithm: This is a classic deadlock avoidance algorithm used in systems with multiple instances of each resource type. It tests for safety by simulating the allocation of predetermined maximum possible amounts of all resources.
+3.5.3 Deadlock Detection and Recovery
+If a system does not employ either prevention or avoidance, a deadlock may occur. In this environment, the system must provide:
+1. An algorithm that examines the state of the system to determine whether a deadlock has occurred.
+2. An algorithm to recover from the deadlock.
+Recovery Options:
+* Process Termination: Abort all deadlocked processes or abort one process at a time until the deadlock cycle is eliminated.
+* Resource Preemption: Successively preempt some resources from processes and give these resources to other processes until the deadlock cycle is broken.
+
+3.6 The Ostrich Algorithm
+Most operating systems, including UNIX and Windows, use the "Ostrich Algorithm"—they simply ignore the problem and pretend that deadlocks never occur in the system. This is done because the cost of preventing or detecting deadlocks is very high compared to the frequency of their occurrence. In this case, if the system stalls, the user must manually reboot.
+

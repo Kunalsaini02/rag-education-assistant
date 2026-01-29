@@ -1,0 +1,53 @@
+CHAPTER 1: INTRODUCTION TO THE OPERATING SYSTEM
+1.1 The Concept of an Operating System
+An Operating System (OS) is a collection of software that manages computer hardware resources and provides common services for computer programs. It acts as the "executive manager" of the computer system—it does not perform useful work by itself, but it provides an environment in which other programs can do useful work efficiently.
+1.1.1 The Abstract View
+A computer system can be divided roughly into four components: the hardware, the operating system, the application programs, and the users.
+* Hardware: The Central Processing Unit (CPU), memory, and Input/Output (I/O) devices provide the basic computing resources.
+* Operating System: Controls and coordinates the use of the hardware among various application programs for various users.
+* Applications: Define the ways in which resources are used to solve users' problems (e.g., compilers, database systems, video games, business software).
+
+1.2 Functions of an Operating System
+An OS serves two primary, and often conflicting, roles:
+1.2.1 The Resource Manager
+Modern computers consist of processors, memories, timers, disks, mice, network interfaces, printers, and a wide variety of other devices. In the role of resource manager, the OS must decide how to allocate these resources to specific programs and users so that the computer operates fairly and efficiently.
+* Time Management: Deciding which process gets the CPU and for how long.
+* Space Management: Allocating fragments of main memory and disk space to different files and programs.
+1.2.2 The Extended Machine (Abstraction)
+For the programmer, the OS provides a level of abstraction. Instead of dealing with the complexities of hardware (such as moving the mechanical arm of a hard drive to read a specific sector), the programmer uses a simple system call to "Open File." The OS hides the "ugly" hardware details and presents a clean interface.
+
+1.3 Evolution of Operating Systems
+The history of operating systems is a journey from manual human intervention to highly automated, intelligent scheduling.
+1.3.1 Serial Processing (1940s–1950s)
+In early computers, there was no OS. The programmer had direct access to the hardware. A user would sign up for a block of time, load their program via punched cards, and wait. If an error occurred, the user had to examine the lights on the console to debug. This was highly inefficient.
+1.3.2 Simple Batch Systems (1950s–1960s)
+To speed up processing, operators batched similar jobs together. A "Resident Monitor" (the first primitive OS) stayed in memory and automatically transitioned from one job to the next.
+* The Bottleneck: The CPU was often idle because I/O devices (like card readers) were much slower than the processor.
+1.3.3 Multiprogramming Systems
+The leap forward came with Multiprogramming. In this setup, the OS keeps several jobs in memory simultaneously. While one job waits for I/O (like a disk read), the OS switches the CPU to another job. This ensures the CPU is rarely idle.
+
+1.4 Operating System Operations
+Modern operating systems are interrupt-driven. If there are no programs to execute, no I/O devices to service, and no users to respond to, an OS will sit quietly, waiting for an event.
+1.4.1 Dual-Mode Operation
+To ensure the proper execution of the system, we must distinguish between the execution of operating-system code and user-defined code.
+1. User Mode: Execution on behalf of the user. Access to hardware is restricted.
+2. Kernel Mode (Monitor Mode): Execution on behalf of the OS. This mode has full access to all hardware and privileged instructions.
+A Mode Bit (0 for Kernel, 1 for User) is added to the hardware to indicate the current mode. When a user program needs a system service, it performs a System Call, which triggers a trap to switch from User Mode to Kernel Mode.
+
+1.5 System Components and Services
+To provide a functional environment, the OS offers several categories of services:
+Service CategoryDescriptionUser InterfaceCLI (Command Line), GUI (Graphical User Interface), or Touch-screen.Program ExecutionLoading a program into memory and running it.I/O OperationsSince users cannot access I/O directly, the OS must handle it.File-System ManipulationCreating, deleting, and managing permissions for files.Error DetectionMonitoring for hardware failures or software bugs.
+1.6 System Calls
+System calls provide the interface between a running program and the operating system. They are generally available as routines written in C or C++.
+Common System Call Categories:
+1. Process Control: end, abort, load, execute.
+2. File Management: create, delete, open, read, write.
+3. Device Management: request, release, read, write.
+
+1.7 Operating System Structures
+There are several ways to structure an OS:
+* Monolithic Structure: The entire OS runs as a single, large program in kernel mode (e.g., Linux). It is fast but difficult to maintain.
+* Layered Approach: The OS is broken into layers. Layer 0 is the hardware; the highest layer is the user interface.
+* Microkernel: Moves as much functionality as possible from the kernel into user space (e.g., Mach, QNX).
+* Modules: Modern OSs use loadable kernel modules to link in services dynamically during boot or at runtime.
+

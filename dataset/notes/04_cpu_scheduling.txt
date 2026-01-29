@@ -1,0 +1,47 @@
+CHAPTER 4: CPU SCHEDULING
+4.1 Basic Concepts
+In a single-processor system, only one process can run at a time; any others must wait until the CPU is free and can be rescheduled. The objective of multiprogramming is to have some process running at all times to maximize CPU utilization.
+4.1.1 CPU-I/O Burst Cycle
+Process execution consists of a cycle of CPU execution and I/O wait. Processes alternate between these two states.
+* CPU Burst: The time the process spends performing calculations.
+* I/O Burst: The time the process spends waiting for an input/output operation to complete.
+Most processes are either I/O-bound (many short CPU bursts) or CPU-bound (a few long CPU bursts).
+
+4.2 CPU Scheduler
+Whenever the CPU becomes idle, the operating system must select one of the processes in the Ready Queue to be executed. The selection process is carried out by the Short-Term Scheduler (or CPU scheduler).
+4.2.1 Preemptive vs. Non-preemptive Scheduling
+1. Non-preemptive (Cooperative): Once the CPU has been allocated to a process, the process keeps the CPU until it releases it either by terminating or by switching to the waiting state.
+2. Preemptive: The OS can interrupt a running process and move it back to the ready state to give the CPU to another process. This is essential for time-sharing systems but requires special hardware (like a timer).
+
+4.3 Scheduling Criteria
+Different scheduling algorithms have different properties. The criteria used for comparing these algorithms include:
+* CPU Utilization: We want to keep the CPU as busy as possible (theoretically 0% to 100%).
+* Throughput: The number of processes that are completed per time unit.
+* Turnaround Time: The interval from the time of submission of a process to the time of completion (Sum of periods spent waiting in ready queue, executing, and doing I/O).
+* Waiting Time: The sum of the periods spent waiting in the ready queue.
+* Response Time: The time from the submission of a request until the first response is produced (important in interactive systems).
+
+4.4 Scheduling Algorithms
+The following algorithms are used to decide which process in the ready queue gets the CPU.
+4.4.1 First-Come, First-Served (FCFS)
+The process that requests the CPU first is allocated the CPU first. It is managed with a FIFO queue.
+* Pros: Simple to implement.
+* Cons: The Convoy Effect occurs when short processes wait for one long process to get off the CPU, resulting in lower utilization.
+4.4.2 Shortest-Job-First (SJF)
+This algorithm associates with each process the length of the process’s next CPU burst. When the CPU is available, it is assigned to the process that has the smallest next CPU burst.
+* Pros: It is optimal—it gives the minimum average waiting time for a given set of processes.
+* Cons: It is difficult to know the length of the next CPU burst in advance.
+4.4.3 Priority Scheduling
+A priority is associated with each process, and the CPU is allocated to the process with the highest priority (usually the smallest integer).
+* Problem: Starvation (or indefinite blocking)—low-priority processes may never execute.
+* Solution: Aging—gradually increasing the priority of processes that wait in the system for a long time.
+4.4.4 Round-Robin Scheduling (RR)
+Designed especially for time-sharing systems. A small unit of time, called a Time Quantum (or time slice), is defined. The ready queue is treated as a circular queue. The CPU scheduler goes around the ready queue, allocating the CPU to each process for a time interval of up to 1 time quantum.
+4.4.5 Multilevel Queue Scheduling
+This partitions the ready queue into several separate queues (e.g., foreground/interactive and background/batch). Each queue has its own scheduling algorithm.
+
+4.5 Multiprocessor Scheduling
+If multiple CPUs are available, load sharing becomes possible.
+* Asymmetric Multiprocessing: One processor (the master) handles all scheduling decisions and I/O processing; the others execute user code.
+* Symmetric Multiprocessing (SMP): Each processor is self-scheduling. All processors may examine a common ready queue or have their own private queue of ready processes.
+
